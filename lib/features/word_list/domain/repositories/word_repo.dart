@@ -1,5 +1,7 @@
 import 'package:dartz/dartz.dart';
+import 'package:wordie/core/error/failure.dart';
+import 'package:wordie/features/word_list/domain/entities/word.dart';
 
 abstract class WordRepo {
-  Future<Either<Failure, Word>> getWord(int id);
+  Future<Either<Failure, List<Word>>> getWordList();
 }
