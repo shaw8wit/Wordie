@@ -32,10 +32,9 @@ void main() {
     'should get word list',
     () async {
       // arrange
-      when(mockWordListRepository.getWordList())
-          .thenAnswer((_) async => Right(wordList));
+      when(mockWordListRepository.getWordList()).thenAnswer((_) async => Right(wordList));
       // act
-      final result = await usecase.execute();
+      final result = await usecase();
       // assert
       expect(result, Right(wordList));
       verify(mockWordListRepository.getWordList());

@@ -9,5 +9,7 @@ class GetConcreteWordList {
 
   GetConcreteWordList(this.repo);
 
-  Future<Either<Failure, List<Word>>> execute() {}
+  Future<Either<Failure, List<Word>>> call() async {
+    return await repo.getWordList();
+  }
 }
