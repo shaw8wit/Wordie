@@ -1,6 +1,6 @@
 # wordie
 
-A new Flutter project.
+A flutter app using CLEAN architecture and TDD(Test Driven Development) for sharing and learning new words.
 
 ## Getting Started
 
