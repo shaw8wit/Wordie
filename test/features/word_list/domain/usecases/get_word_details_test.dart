@@ -3,20 +3,20 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:wordie/features/word_list/domain/entities/word.dart';
 import 'package:wordie/features/word_list/domain/repositories/word_repo.dart';
-import 'package:wordie/features/word_list/domain/usecases/get_concrete_word_list.dart';
+import 'package:wordie/features/word_list/domain/usecases/get_word_details.dart';
 
-class MockWordListRepository extends Mock implements WordRepo {}
+class MockWordDetailsRepository extends Mock implements WordRepo {}
 
 void main() {
   GetWordDetails usecase;
-  MockWordListRepository mockWordListRepository;
+  MockWordDetailsRepository mockWordDetailsRepository;
 
   setUp(() {
-    mockWordListRepository = MockWordListRepository();
-    usecase = GetWordDetails(mockWordListRepository);
+    mockWordDetailsRepository = MockWordDetailsRepository();
+    usecase = GetWordDetails(mockWordDetailsRepository);
   });
 
-  final String id = '1';
+  final String word = 'fam';
   final Word wordDetails = Word(
     title: 'fam',
     id: '1',
@@ -31,14 +31,13 @@ void main() {
     'should get matching word',
     () async {
       // arrange
-      when(mockWordListRepository.getWordDetails(String id))
-          .thenAnswer((_) async => Right(wordDetails));
+      when(mockWordDetailsRepository.getWordDetails(any)).thenAnswer((_) async => Right(wordDetails));
       // act
-      final result = await usecase(Params(id));
+      final result = await usecase(Params(word: word));
       // assert
       expect(result, Right(wordDetails));
-      verify(mockWordListRepository.getWordList());
-      verifyNoMoreInteractions(mockWordListRepository);
+      verify(mockWordDetailsRepository.getWordDetails(word));
+      verifyNoMoreInteractions(mockWordDetailsRepository);
     },
   );
 }
