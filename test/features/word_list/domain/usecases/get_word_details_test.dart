@@ -18,7 +18,7 @@ void main() {
 
   final String word = 'fam';
   final Word wordDetails = Word(
-    title: 'fam',
+    word: 'fam',
     id: '1',
     description: 'its ma fam',
     example: 'fam call',
