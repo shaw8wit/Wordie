@@ -3,19 +3,23 @@ import 'package:wordie/features/word_list/domain/entities/word.dart';
 
 class WordDetailsModel extends Word {
   WordDetailsModel({
-    @required String word,
-    @required id,
-    @required description,
-    @required example,
-    @required url,
+    @required word,
+    @required pronunciation,
+    @required audio,
+    @required soundsLike,
+    @required spelledLike,
+    @required frequency,
+    @required partOfSpeech,
     @required score,
     @required favourite,
   }) : super(
           word: word,
-          id: id,
-          description: description,
-          example: example,
-          url: url,
+          pronunciation: pronunciation,
+          audio: audio,
+          soundsLike: soundsLike,
+          spelledLike: spelledLike,
+          frequency: frequency,
+          partOfSpeech: partOfSpeech,
           score: score,
           favourite: favourite,
         );

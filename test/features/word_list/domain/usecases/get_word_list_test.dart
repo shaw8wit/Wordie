@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:wordie/features/word_list/domain/entities/part_of_speech.dart';
 import 'package:wordie/features/word_list/domain/entities/word.dart';
 import 'package:wordie/features/word_list/domain/repositories/word_repo.dart';
 import 'package:wordie/features/word_list/domain/usecases/get_word_list.dart';
@@ -18,11 +19,20 @@ void main() {
 
   final List<Word> wordList = [
     Word(
-      word: 'fam',
-      id: '1',
-      description: 'its ma fam',
-      example: 'fam call',
-      url: 'fam url',
+      word: 'dead',
+      pronunciation: '/dɛd/',
+      audio: 'https://lex-audio.useremarkable.com/mp3/dead_us_1.mp3',
+      soundsLike: ['ded', 'dde', 'ddc', 'ddg', 'did'],
+      spelledLike: [],
+      frequency: 146.23,
+      partOfSpeech: [
+        PartOfSpeech(
+          type: 'adjective',
+          definition: 'No longer alive.',
+          example: 'a dead body',
+          synonyms: ["deceased", "expired", "departed", "gone", "no more", "passed on", "passed away"],
+        )
+      ],
       score: 0,
       favourite: false,
     ),
