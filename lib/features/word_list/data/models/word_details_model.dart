@@ -23,4 +23,8 @@ class WordDetailsModel extends Word {
           score: score,
           favourite: favourite,
         );
+
+  factory WordDetailsModel.fromJson(Map<String, dynamic> json) {
+    //TODO
+  }
 }
