@@ -14,7 +14,7 @@ void main() {
     audio: 'https://lex-audio.useremarkable.com/mp3/dead_us_1.mp3',
     soundsLike: ['ded', 'dde', 'ddc', 'ddg', 'did'],
     spelledLike: <String>[],
-    frequency: 146.24,
+    frequency: 146,
     partOfSpeech: [
       PartOfSpeech(
         type: 'adjective',
@@ -71,12 +71,11 @@ void main() {
   group('fromJson', () {
     test('should return a valid word model with no discrepancy', () async {
       // arrange
-      final Map<String, dynamic> wordJsonMap = json.decode(fixture('word.json'));
-      final Map<String, dynamic> spelledLikeFrequencyJsonMap =
-          json.decode(fixture('spelledLike_freq_def.json'));
-      final Map<String, dynamic> soundLikeJsonMap = json.decode(fixture('soundLike.json'));
+      final List<dynamic> wordJsonMap = json.decode(fixture('word.json'));
+      final List<dynamic> spelledLikeFrequencyJsonMap = json.decode(fixture('spelledLike_freq_def.json'));
+      final List<dynamic> soundLikeJsonMap = json.decode(fixture('soundLike.json'));
       // act
-      final result = WordModel.fromJson(wordJsonMap, spelledLikeFrequencyJsonMap, soundLikeJsonMap);
+      final result = WordDetailsModel.fromJson(wordJsonMap, spelledLikeFrequencyJsonMap, soundLikeJsonMap);
       // assert
       expect(result, tWordDetailsModel);
     });

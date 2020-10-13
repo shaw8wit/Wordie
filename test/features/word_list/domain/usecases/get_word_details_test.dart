@@ -24,7 +24,7 @@ void main() {
     audio: 'https://lex-audio.useremarkable.com/mp3/dead_us_1.mp3',
     soundsLike: ['ded', 'dde', 'ddc', 'ddg', 'did'],
     spelledLike: [],
-    frequency: 146.23,
+    frequency: 146,
     partOfSpeech: [
       PartOfSpeech(
         type: 'adjective',

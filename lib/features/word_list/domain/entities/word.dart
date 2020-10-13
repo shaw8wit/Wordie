@@ -8,7 +8,7 @@ class Word extends Equatable {
   final String audio;
   final List<String> soundsLike;
   final List<String> spelledLike;
-  final double frequency;
+  final int frequency;
   final List<PartOfSpeech> partOfSpeech;
   final int score;
   final bool favourite;
