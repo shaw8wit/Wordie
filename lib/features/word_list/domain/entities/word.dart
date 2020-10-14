@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:wordie/features/word_list/domain/entities/part_of_speech.dart';
 
+/// The most important base entity.
 class Word extends Equatable {
   final String word;
   final String pronunciation;

@@ -68,6 +68,7 @@ void main() {
     expect(tWordDetailsModel, isA<Word>());
   });
 
+  // checking WordDetailsModel generation from json
   group('fromJson', () {
     test('should return a valid word model with no discrepancy', () async {
       // arrange

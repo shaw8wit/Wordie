@@ -27,6 +27,7 @@ class WordDetailsModel extends Word {
           favourite: favourite,
         );
 
+  /// Creating WordDetailsModel from three extracted json data.
   factory WordDetailsModel.fromJson(
     List<dynamic> wordJsonMap,
     List<dynamic> spelledLikeFrequencyJsonMap,
@@ -57,7 +58,7 @@ class WordDetailsModel extends Word {
       word: wordJsonMap[0]['word'],
       pronunciation: wordJsonMap[0]['phonetics'][0]['text'],
       audio: wordJsonMap[0]['phonetics'][0]['audio'],
-      soundsLike: soundsLike.sublist(1),
+      soundsLike: soundsLike.sublist(1, min(soundsLike.length, 6)),
       spelledLike: spelledLike.sublist(1),
       frequency: double.parse(spelledLikeFrequencyJsonMap[0]['tags'][0].substring(2)).round(),
       partOfSpeech: partOfSpeech,

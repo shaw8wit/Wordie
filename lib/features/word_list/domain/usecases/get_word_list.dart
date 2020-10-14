@@ -17,6 +17,7 @@ class GetWordList implements UseCase<List<Word>, NoParams> {
   }
 }
 
+/// class for empty argument to fit in call() as it expects params
 class NoParams extends Equatable {
   @override
   List<Object> get props => [];

@@ -7,6 +7,7 @@ import 'package:wordie/features/word_list/domain/entities/word.dart';
 
 import '../repositories/word_repo.dart';
 
+/// encapsulating the data - [word]
 class Params extends Equatable {
   final String word;
 
@@ -16,6 +17,7 @@ class Params extends Equatable {
   List<Object> get props => [word];
 }
 
+/// Get Word Details usecase
 class GetWordDetails implements UseCase<Word, Params> {
   final WordRepo repo;
 

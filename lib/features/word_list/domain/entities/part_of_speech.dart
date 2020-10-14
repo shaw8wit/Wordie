@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+/// Contains multiple [type], [definition], [example] and [synonyms] for [Word] class.
 class PartOfSpeech extends Equatable {
   final String type;
   final String definition;
