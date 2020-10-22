@@ -1,0 +1,133 @@
+import 'package:dartz/dartz.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
+import 'package:wordie/core/error/exceptions.dart';
+import 'package:wordie/core/error/failure.dart';
+import 'package:wordie/core/platform/network_info.dart';
+import 'package:wordie/features/word_list/data/datasources/word_local_data_source.dart';
+import 'package:wordie/features/word_list/data/datasources/word_remote_data_source.dart';
+import 'package:wordie/features/word_list/data/models/word_details_model.dart';
+import 'package:wordie/features/word_list/data/repositories/word_repository_impl.dart';
+import 'package:wordie/features/word_list/domain/entities/part_of_speech.dart';
+import 'package:wordie/features/word_list/domain/entities/word.dart';
+
+class MockRemoteDataSource extends Mock implements WordRemoteDataSource {}
+
+class MockLocalDataSource extends Mock implements WordLocalDataSource {}
+
+class MockNetworkInfo extends Mock implements NetworkInfo {}
+
+void main() {
+  WordRepoImpl repository;
+  MockRemoteDataSource mockRemoteDataSource;
+  MockLocalDataSource mockLocalDataSource;
+  MockNetworkInfo mockNetworkInfo;
+
+  setUp(() {
+    mockNetworkInfo = MockNetworkInfo();
+    mockLocalDataSource = MockLocalDataSource();
+    mockRemoteDataSource = MockRemoteDataSource();
+    repository = WordRepoImpl(
+      remoteDataSource: mockRemoteDataSource,
+      localDataSource: mockLocalDataSource,
+      networkInfo: mockNetworkInfo,
+    );
+  });
+
+  group('getWordDetails', () {
+    final word = 'dead';
+    final tWordDetailsModel = WordDetailsModel(
+      word: 'dead',
+      pronunciation: '/dɛd/',
+      audio: 'https://lex-audio.useremarkable.com/mp3/dead_us_1.mp3',
+      soundsLike: ['ded', 'dde', 'ddc', 'ddg', 'did'],
+      spelledLike: <String>[],
+      frequency: 146,
+      partOfSpeech: [
+        PartOfSpeech(
+          type: 'adjective',
+          definition: 'No longer alive.',
+          example: 'a dead body',
+          synonyms: ["deceased", "expired", "departed", "gone", "no more", "passed on", "passed away"],
+        )
+      ],
+      score: 0,
+      favourite: false,
+    );
+    final Word tWord = tWordDetailsModel;
+
+    test('should check if device is online', () async {
+      // arrange
+      when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+      // act
+      repository.getWordDetails(word);
+      // assert
+      verify(mockNetworkInfo.isConnected);
+    });
+
+    group('device is online', () {
+      setUp(() {
+        when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+      });
+
+      test('should return remote data when the call to remote data source is successful', () async {
+        // arrange
+        when(mockRemoteDataSource.getWordDetails(any)).thenAnswer((_) async => tWordDetailsModel);
+        // act
+        final result = await repository.getWordDetails(word);
+        // assign
+        verify(mockRemoteDataSource.getWordDetails(word));
+        expect(result, Right(tWord));
+      });
+
+      test('should cache the data locally when the call to remote data source is successful', () async {
+        // arrange
+        when(mockRemoteDataSource.getWordDetails(any)).thenAnswer((_) async => tWordDetailsModel);
+        // act
+        await repository.getWordDetails(word);
+        // assign
+        verify(mockRemoteDataSource.getWordDetails(word));
+        verify(mockLocalDataSource.cachedWordDetails(tWordDetailsModel));
+      });
+
+      test('should return server failure when the call to remote data source is unsuccessful', () async {
+        // arrange
+        when(mockRemoteDataSource.getWordDetails(any)).thenThrow(ServerException());
+        // act
+        final result = await repository.getWordDetails(word);
+        // assign
+        verify(mockRemoteDataSource.getWordDetails(word));
+        verifyZeroInteractions(mockLocalDataSource);
+        expect(result, equals(Left(ServerFailure())));
+      });
+    });
+
+    group('device is offline', () {
+      setUp(() {
+        when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
+      });
+
+      test('should return last locally cached data when the cached data is present', () async {
+        // arrange
+        when(mockLocalDataSource.getLastWordDetails()).thenAnswer((_) async => tWordDetailsModel);
+        // act
+        final result = await repository.getWordDetails(word);
+        // assert
+        verifyZeroInteractions(mockRemoteDataSource);
+        verify(mockLocalDataSource.getLastWordDetails());
+        expect(result, equals(Right(tWord)));
+      });
+
+      test('should return CacheFailure when no cached data is present', () async {
+        // arrange
+        when(mockLocalDataSource.getLastWordDetails()).thenThrow(CacheException());
+        // act
+        final result = await repository.getWordDetails(word);
+        // assert
+        verifyZeroInteractions(mockRemoteDataSource);
+        verify(mockLocalDataSource.getLastWordDetails());
+        expect(result, equals(Left(CacheFailure())));
+      });
+    });
+  });
+}
