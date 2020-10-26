@@ -11,5 +11,5 @@ abstract class WordLocalDataSource {
 
   Future<List<WordDetailsModel>> getLastWordList();
 
-  Future<void> cachedWordList(WordDetailsModel wordToCache);
+  Future<void> cachedWordList(List<WordDetailsModel> wordListToCache);
 }

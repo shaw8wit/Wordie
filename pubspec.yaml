@@ -16,6 +16,7 @@ dependencies:
   dartz: ^0.9.1
   equatable: ^1.2.5
   mockito: ^4.1.2
+  data_connection_checker: ^0.3.4
 
 dev_dependencies:
   flutter_test:

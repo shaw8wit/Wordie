@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
 import 'package:wordie/core/error/exceptions.dart';
 import 'package:wordie/core/error/failure.dart';
-import 'package:wordie/core/platform/network_info.dart';
+import 'package:wordie/core/network/network_info.dart';
 import 'package:wordie/features/word_list/data/datasources/word_local_data_source.dart';
 import 'package:wordie/features/word_list/data/datasources/word_remote_data_source.dart';
 import 'package:wordie/features/word_list/domain/entities/word.dart';
@@ -36,7 +36,22 @@ class WordRepoImpl implements WordRepo {
   }
 
   @override
-  Future<Either<Failure, List<Word>>> getWordList() {
-    return null;
+  Future<Either<Failure, List<Word>>> getWordList() async {
+    if (await networkInfo.isConnected) {
+      try {
+        final remoteWord = await remoteDataSource.getWordList();
+        localDataSource.cachedWordList(remoteWord);
+        return Right(remoteWord);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      try {
+        final localWord = await localDataSource.getLastWordList();
+        return Right(localWord);
+      } on CacheException {
+        return Left(CacheFailure());
+      }
+    }
   }
 }
