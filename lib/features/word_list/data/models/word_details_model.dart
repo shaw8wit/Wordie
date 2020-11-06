@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:meta/meta.dart';
@@ -65,5 +66,33 @@ class WordDetailsModel extends Word {
       score: 0,
       favourite: false,
     );
+  }
+
+  factory WordDetailsModel.fromBuiltJson(Map<String, dynamic> json) {
+    return WordDetailsModel(
+      word: json['word'],
+      pronunciation: json['pronunciation'],
+      audio: json['audio'],
+      soundsLike: jsonDecode(json['soundsLike']) as List,
+      spelledLike: jsonDecode(json['spelledLike']) as List,
+      frequency: json['frequency'],
+      partOfSpeech: (json['partOfSpeech'] as List).map((e) => PartOfSpeech.fromJson(e)).toList(),
+      score: json['score'],
+      favourite: json['favourite'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'word': word,
+      'pronunciation': pronunciation,
+      'audio': audio,
+      'soundsLike': jsonEncode(soundsLike),
+      'spelledLike': jsonEncode(spelledLike),
+      'frequency': frequency,
+      'partOfSpeech': jsonEncode(partOfSpeech),
+      'score': score,
+      'favourite': favourite,
+    };
   }
 }

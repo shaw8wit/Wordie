@@ -9,6 +9,15 @@ class PartOfSpeech extends Equatable {
 
   PartOfSpeech({this.type, this.definition, this.example, this.synonyms});
 
+  factory PartOfSpeech.fromJson(Map<String, dynamic> json) {
+    return PartOfSpeech(
+      type: json['type'],
+      definition: json['definition'],
+      example: json['example'],
+      synonyms: json['synonyms'] as List,
+    );
+  }
+
   @override
   List<Object> get props => [type, definition, example, synonyms];
 }
