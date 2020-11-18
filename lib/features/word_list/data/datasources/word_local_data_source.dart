@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wordie/features/word_list/data/models/word_details_model.dart';
@@ -35,8 +37,8 @@ class WordLocalDataSourceImpl implements WordLocalDataSource {
 
   @override
   Future<WordDetailsModel> getLastWordDetails() {
-    // TODO: implement getLastWordDetails
-    throw UnimplementedError();
+    final jsonString = sharedPreferences.getString('CACHED_WORD_DETAILS');
+    return Future.value(WordDetailsModel.fromBuiltJson(json.decode(jsonString)));
   }
 
   @override
